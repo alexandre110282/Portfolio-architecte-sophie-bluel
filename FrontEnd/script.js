@@ -9,16 +9,19 @@ console.log(index)
 
  
 const gallery= document.querySelector('.gallery')
-const boutonsText = ["Tous", "Objets", "Appartements", "Hôtels & restaurants"];
+
+const boutonsText = ["Tous", "Objets", "Appartements", "Hôtels & restaurants"]
+const boutonClass =[ "btn-tous", "btn-obj", "btn-appart", "btn-hotel"]
 const listFiltre= document.createElement("div")
  listFiltre.classList.add("listfiltres")
  
 // Boucle pour créer et configurer chaque bouton
+
 for (let i = 0; i < boutonsText.length; i++) {
     // Création du bouton
     const bouton = document.createElement('button')
     bouton.type = "submit"
-    bouton.classList.add("filtres")
+    bouton.classList.add("filtres", boutonClass[i])
     // Attribution du texte au bouton à partir du tableau
     bouton.innerText = boutonsText[i]
     // Ajout du bouton au corps du document
@@ -29,8 +32,8 @@ for (let i = 0; i < boutonsText.length; i++) {
 const portH2 = document.querySelector("#portfolio h2")
 portH2.parentNode.insertBefore(listFiltre, portH2.nextSibling)
 
-
-for (let i=0; i< index.length; i++){
+function genererProjets(trueReponse){
+for (let i=0; i< trueReponse.length; i++){
     
     let figure =document.createElement("figure")
 
@@ -51,8 +54,44 @@ for (let i=0; i< index.length; i++){
 
     //insertion figure dans balise gallery
     gallery.appendChild(figure)
-    console.log(figure)
-}
+    
+}}
+genererProjets(trueReponse)
 
+
+const tous=  document.querySelector(".btn-tous")
+tous.addEventListener("click",function(){
+ document.querySelector(".gallery").innerHTML =""
+    genererProjets(trueReponse)
+})
+
+ const objets =  document.querySelector(".btn-obj")
+  objets.addEventListener("click", function(){
+    const objetsFiltres =  trueReponse.filter(function(objet){
+    return objet.category.name === "Objets"
+    })
+    document.querySelector(".gallery").innerHTML =""
+    genererProjets(objetsFiltres)
+  })
+
+  const apparts =  document.querySelector(".btn-appart")
+  apparts.addEventListener("click", function(){
+    const appartsFiltres =  trueReponse.filter(function(appart){
+    return appart.category.name === "Appartements"
+    })
+     document.querySelector(".gallery").innerHTML =""
+    genererProjets(appartsFiltres)
+  })
+
+  const hotels =  document.querySelector(".btn-hotel")
+  hotels.addEventListener("click", function(){
+    const hotelsFiltres =  trueReponse.filter(function(hotel){
+    return hotel.category.name === "Hotels & restaurants"
+    })
+    document.querySelector(".gallery").innerHTML =""
+    genererProjets(hotelsFiltres)
+  })
+
+  
 
   
