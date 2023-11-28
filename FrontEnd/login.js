@@ -20,6 +20,7 @@ document.querySelector("form").addEventListener("submit", function (event) {
     .then((response) => {
       if (response.status === 404) {
         const invalidEmailDiv = document.querySelector(".invalidEmail");
+        invalidEmailDiv.innerHTML = ""
         const invalidEmail = document.createElement("p");
         invalidEmail.innerText = "Email non valide";
         invalidEmailDiv.appendChild(invalidEmail);
@@ -28,6 +29,7 @@ document.querySelector("form").addEventListener("submit", function (event) {
       }
       if (response.status === 401) {
         const invalidPasswordDiv = document.querySelector(".invalidPassword");
+        invalidPasswordDiv.innerHTML = ""
         const invalidPassword =  document.createElement("p");
         invalidPassword.innerText = "Mot de passe non valide";
         invalidPasswordDiv.appendChild(invalidPassword);
