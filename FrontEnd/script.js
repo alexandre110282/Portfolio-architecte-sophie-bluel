@@ -1,5 +1,5 @@
 const apiUrl = 'http://localhost:5678/api/works';
-
+console.log(apiUrl)
 const reponse= await fetch(apiUrl)
 const trueReponse= await reponse.json()
 console.log(trueReponse)
