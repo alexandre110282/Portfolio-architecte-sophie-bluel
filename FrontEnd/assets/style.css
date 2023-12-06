@@ -163,7 +163,7 @@ li:hover {
 	font-style: normal;
 	font-weight: 700;
 	line-height: normal;
-		}
+}
 
 
 #contact {
@@ -244,7 +244,7 @@ height: 36px;
 /* modification index*/
 
 .entetegallery{
-	display: flex;
+	
 	justify-content: center;
 	align-items: baseline;
 	gap: 30px;
@@ -254,6 +254,30 @@ height: 36px;
 	text-decoration: none;
 	color: black;
 }
+
+/*bande noire*/
+.banner{
+	width: 100%;
+    background-color: black;
+    color: white;
+    height: 59px;
+    position: absolute;
+    top: 0;
+	left: 0;
+	display: flex;
+    align-items: center;
+    justify-content: center;
+	gap:10px
+}
+header h1, header nav{
+	margin-top: 30px;
+}
+
+.banner svg path{
+	fill: white;
+}
+
+
 /*fenetre modale*/
 
 .modal{
@@ -278,12 +302,92 @@ height: 36px;
 	background-color: #fff;
 	border-radius: 10px;
 	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .modal-wrapper a{
 	text-decoration: none;
 	color: black;
-font-size: 24px;
-position: absolute;
-right: 30px;
+	font-size: 24px;
+	position: absolute;
+	right: 30px;
+}
+
+.modal-wrapper img{
+	width: 78.123px;
+	height: 104.08px;
+	margin-bottom: 25px;
+}
+
+.imgWrapper{
+	display: grid;
+	grid-template-columns: repeat(5, 2fr);
+	margin-right: 105px;
+	margin-left: 105px;
+	gap: 6.23px;
+	border-bottom: 1px solid #B3B3B3;
+	padding-bottom: 35px;
+}
+#titlemodal{
+	font-size: 26px;
+	text-align: center;
+	margin-top: 60px;
+	margin-bottom: 46px;
+}
+
+.btn_ajout{
+	width: 237px;
+    height: 36px;
+    border-radius: 60px;
+    background: #1D6145;
+    color: white;
+    border: none;
+    font-family: syne;
+	margin-top: 40px;
+}
+
+.close-btn{
+	position: absolute;
+	top: 26px;
+	right: 30px;
+}
+
+.backButton{
+	position: absolute;
+	top: 26px;
+	left: 30px;
+}
+
+.ajoutPhoto{
+	width: 420px;
+height: 169px;
+border-radius: 3px;
+background: #E8F1F6;
+}
+
+.formsContainer form{
+	display: flex;
+	flex-direction: column;
+}
+
+.formsContainer input{
+	width: 420px;
+height: 51px;
+background: #FFF;
+box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.09);
+border: none;
+}
+
+.formsContainer label{
+	color: #3D3D3D;
+
+font-family: Work Sans;
+font-size: 14px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+margin-top: 46px;
+    margin-bottom: 10px;
 }

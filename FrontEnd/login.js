@@ -37,14 +37,14 @@ async function loginUser() {
 
       throw new Error("Mot de passe non valide");
     }
-
+if (response.ok){
     const data = await response.json();
 
     localStorage.setItem('token', data.token);
 
   
     // Rediriger vers la page d'accueil après le traitement
-    window.location.href = 'index.html';
+    window.location.href = 'index.html';}
   } catch (error) {
     // Gestion des erreurs ici
     console.error(error.message);
