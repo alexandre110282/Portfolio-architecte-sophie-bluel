@@ -336,10 +336,12 @@ function modal2(event) {
    addButton.addEventListener("click",function(event){
     event.preventDefault()
     if(gallery && newImg){
+        const figure = document.createElement ("figure")
         const imageElement = document.createElement("img");
             imageElement.src = URL.createObjectURL(newImg);
             imageElement.alt = "Image sélectionnée";
-        gallery.appendChild(imageElement)}
+        figure.appendChild(imageElement)
+        gallery.appendChild(figure)}
     insideModal()
     
 
