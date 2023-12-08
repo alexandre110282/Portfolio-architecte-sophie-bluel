@@ -5,9 +5,7 @@ const trueReponse = await reponse.json();
 console.log(trueReponse);
 console.log(reponse);
 const index = trueReponse.map(list => list.imageUrl);
-const imgEdit = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path d="M13.5229 1.68576L13.8939 2.05679C14.1821 2.34503 14.1821 2.81113 13.8939 3.0963L13.0016 3.99169L11.5879 2.57808L12.4803 1.68576C12.7685 1.39751 13.2346 1.39751 13.5198 1.68576H13.5229ZM6.43332 7.73578L10.5484 3.61759L11.9621 5.03121L7.84387 9.14633C7.75494 9.23525 7.64455 9.29964 7.52496 9.33337L5.73111 9.84546L6.2432 8.05162C6.27693 7.93203 6.34133 7.82164 6.43025 7.73271L6.43332 7.73578ZM11.4408 0.646245L5.39074 6.6932C5.12397 6.95998 4.93078 7.28808 4.82959 7.64685L3.9526 10.7133C3.879 10.9708 3.94953 11.2468 4.13965 11.4369C4.32977 11.627 4.60574 11.6976 4.86332 11.624L7.92973 10.747C8.29156 10.6427 8.61967 10.4495 8.88338 10.1858L14.9334 4.13888C15.7951 3.27722 15.7951 1.87894 14.9334 1.01728L14.5624 0.646245C13.7007 -0.215415 12.3024 -0.215415 11.4408 0.646245ZM2.69844 1.84214C1.20816 1.84214 0 3.05031 0 4.54058V12.8812C0 14.3715 1.20816 15.5796 2.69844 15.5796H11.0391C12.5293 15.5796 13.7375 14.3715 13.7375 12.8812V9.44683C13.7375 9.039 13.4094 8.71089 13.0016 8.71089C12.5937 8.71089 12.2656 9.039 12.2656 9.44683V12.8812C12.2656 13.5589 11.7167 14.1078 11.0391 14.1078H2.69844C2.02076 14.1078 1.47188 13.5589 1.47188 12.8812V4.54058C1.47188 3.86291 2.02076 3.31402 2.69844 3.31402H6.13281C6.54065 3.31402 6.86875 2.98591 6.86875 2.57808C6.86875 2.17025 6.54065 1.84214 6.13281 1.84214H2.69844Z" fill="black"/>
-</svg>`;
+const imgEdit = `<i class="fa-regular fa-pen-to-square"></i>`;
 
 window.addEventListener('keydown', function (e) {
     if (e.key === "F5") {
@@ -67,8 +65,14 @@ function genererImg() {
         //acces image[i] et alt
         img.src = trueReponse[i].imageUrl;
         img.alt = trueReponse[i].title;
+        //insertion icone trash
+        const trashIcone =  document.createElement("div")
+        trashIcone.classList.add("trash")
+        trashIcone.innerHTML = '<svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M6.6 1.8V0.9C6.6 0.402944 6.19704 0 5.7 0H3.3C2.80294 0 2.4 0.402944 2.4 0.9V1.8H0V2.4H0.6V8.1C0.6 8.59704 1.00294 9 1.5 9H7.5C7.99704 9 8.4 8.59704 8.4 8.1V2.4H9V1.8H6.6ZM3 0.9C3 0.734316 3.13432 0.6 3.3 0.6H5.7C5.86568 0.6 6 0.734316 6 0.9V1.8H3V0.9ZM4.2 4.2V7.2H4.8V4.2H4.2ZM2.4 7.2V5.4H3V7.2H2.4ZM6 5.4V7.2H6.6V5.4H6Z" fill="white"/></svg>';
+
         // insertion nouveaux elements dans figure
         figure.appendChild(img);
+        figure.appendChild(trashIcone)
         imgElements.push(figure);
     }
     return imgElements;
@@ -133,28 +137,10 @@ if (token != null) {
 // Fenêtre modale
 
 // Titre modal
-const titlemodal = document.createElement("h3");
-titlemodal.setAttribute("id", "titlemodal");
-const defaultTitleText = "Galerie Photo";
-const additionalTitleText = "Ajout photo";
-titlemodal.textContent = defaultTitleText;
+
 
 // Bouton ajout photo
-const addButton = document.createElement("button");
-addButton.classList.add("btn_ajout");
-const defaultButtonText = "Ajouter une photo";
-
-const modalWrapper = document.querySelector(".modal-wrapper");
-
-const closeButton = document.createElement("span");
-closeButton.classList.add("close-btn");
-closeButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-<path d="M17.6546 8.05106C18.1235 7.58214 18.1235 6.82061 17.6546 6.35169C17.1856 5.88277 16.4241 5.88277 15.9552 6.35169L12.005 10.3056L8.05106 6.35544C7.58214 5.88652 6.82061 5.88652 6.35169 6.35544C5.88277 6.82436 5.88277 7.58589 6.35169 8.05481L10.3056 12.005L6.35544 15.9589C5.88652 16.4279 5.88652 17.1894 6.35544 17.6583C6.82436 18.1272 7.58589 18.1272 8.05481 17.6583L12.005 13.7044L15.9589 17.6546C16.4279 18.1235 17.1894 18.1235 17.6583 17.6546C18.1272 17.1856 18.1272 16.4241 17.6583 15.9552L13.7044 12.005L17.6546 8.05106Z" fill="black"/>
-</svg>`;
-
-const closeLink = document.createElement("a");
-closeLink.setAttribute("href", "#"); // Ajoutez le lien vers lequel vous souhaitez rediriger
-closeLink.appendChild(closeButton);
+;
 
 const backButton = document.createElement("span");
 const backButtonContainer = document.createElement("div");
@@ -223,13 +209,13 @@ let categorieImg = ""
 
 
 function modal2(event) {
+    event.preventDefault()
         // Vérifier si l'événement provient du bouton btnAjout
-        if (event.target === addButton) {
+        
             const wrapper = document.querySelector(".imgWrapper");
             if (wrapper) {
                 wrapper.remove();
-            }
-
+            
             // Changer le texte de l'élément titlemodal
             titlemodal.textContent = additionalTitleText;
 
@@ -248,13 +234,15 @@ function modal2(event) {
 
             // Ajout du conteneur à la modal
             modalWrapper.appendChild(backButtonContainer);
-
-            const formsContainer = document.createElement("div");
+ 
+ const formsContainer = document.createElement("div");
             formsContainer.classList.add("formsContainer")
-            if(formsContainer){
+ document.addEventListener("DOMContentLoaded", function(){
+           
+           if(formsContainer){
                 formsContainer.innerHTML=""
             }
-            
+            })
             formsContainer.appendChild(createFormElement("Titre", "text"));
             formsContainer.appendChild(createFormElement("Catégorie", "text"));
 
@@ -330,7 +318,7 @@ function modal2(event) {
 [ titreInput, categorieInput ].forEach(input => input.addEventListener("input", handleFormChange));
         backButton.addEventListener("click", function () {
             resetOpenModal();
-            insideModal();
+            insideModal()
         });
 
    addButton.addEventListener("click",function(event){
@@ -348,57 +336,14 @@ function modal2(event) {
 })
     
 }
-
-function openModal(e) {
-    e.preventDefault();
-    const target = document.querySelector(e.target.getAttribute("href"));
-    target.style.display = null;
-    target.removeAttribute("aria-hidden");
-    target.setAttribute("aria-modal", "true");
-}
-
-function insideModal() {
-    modalWrapper.innerHTML = "";
-    titlemodal.textContent = defaultTitleText;
-    modalWrapper.appendChild(titlemodal);
-    closeButton.addEventListener("click", closeModal);
-    modalWrapper.appendChild(closeButton);
-
-    const spanWrapper = document.createElement("span");
-    spanWrapper.classList.add("imgWrapper");
-    modalWrapper.appendChild(spanWrapper);
-
-    const wrapper = document.querySelector(".imgWrapper");
-
-    if (wrapper.childElementCount === 0) {
-        genererImg().forEach(img => {
-            wrapper.appendChild(img);
-        });
-    }
-
-    modalWrapper.appendChild(addButton);
-    addButton.innerHTML = defaultButtonText;
-    addButton.disabled = false;
-    addButton.style.backgroundColor = "#1D6154";
-
-    addButton.addEventListener("click", function (event) {
-        event.preventDefault()
-        modal2(event)    
-        })
-}
-
-
 const closeModal = function (e) {
     e.preventDefault();
     const target = document.getElementById("modal1");
     target.style.display = "none";
-
     while (modalWrapper.firstChild) {
         modalWrapper.removeChild(modalWrapper.firstChild);
     }
 };
-
-insideModal();
 
 document.querySelectorAll(".modale").forEach(a => {
     a.addEventListener("click", openModal);
