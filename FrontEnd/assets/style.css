@@ -354,17 +354,15 @@ header h1, header nav{
 	right: 30px;
 }
 
-.backButton{
-	position: absolute;
-	top: 26px;
-	left: 30px;
+.close-btn i{
+	font-size: 24px;
 }
 
-.ajoutPhoto{
-	width: 420px;
-height: 169px;
-border-radius: 3px;
-background: #E8F1F6;
+.back-button-container{
+	position: absolute;
+    font-size: 24px;
+    left: 34px;
+    top: 24px;
 }
 
 .formsContainer form{
@@ -382,7 +380,6 @@ border: none;
 
 .formsContainer label{
 	color: #3D3D3D;
-
 font-family: Work Sans;
 font-size: 14px;
 font-style: normal;
@@ -391,8 +388,40 @@ line-height: normal;
 margin-top: 46px;
     margin-bottom: 10px;
 }
-.ajoutPhoto{display: flex;
+
+.ajoutPhoto
+{display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 13px;}
+    gap: 13px;width: 420px;
+height: 169px;
+border-radius: 3px;
+background: #E8F1F6;
+}
+
+.ajoutPhoto i{
+	font-size: 76px;
+	color: #B9C5CC;
+}
+
+.imgWrapper figure{
+	position: relative;
+}
+
+.imgWrapper figure .trash{
+	position: absolute;
+    top: 5px;
+    right: 5px;
+    background: black;
+    width: 17px;
+    display: flex;
+    justify-content: center;
+    height: 17px;
+}
+
+.trash i{
+	margin-top: 1px;
+	height: 11px;
+	color: white;
+}
