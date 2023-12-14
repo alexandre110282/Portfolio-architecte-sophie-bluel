@@ -61,31 +61,60 @@ export function genererImg() {
     const imgElements = [];
     for (let i = 0; i < trueReponse.length; i++) {
         let figure = document.createElement("figure");
-        //creation balise img et figcaption
+        // Création des balises img et figcaption
         const img = document.createElement("img");
-        //acces image[i] et alt
+        // Accès à l'image[i] et alt
         img.src = trueReponse[i].imageUrl;
         img.alt = trueReponse[i].title;
-        //insertion icone trash
-        const trashIcone =  document.createElement("div")
-        trashIcone.classList.add("trash")
-        const trashImg = '<i class="fa-solid fa-trash-can"></i>'
-        trashIcone.setAttribute('data-index', i)
+        // Insertion de l'icône trash
+        const trashIcone = document.createElement("div");
+        trashIcone.classList.add("trash");
+        const trashImg = '<i class="fa-solid fa-trash-can"></i>';
+        trashIcone.setAttribute('data-index', i);
         trashIcone.innerHTML = trashImg;
         // Ajout de l'événement de clic sur l'icône de corbeille
         trashIcone.addEventListener('click', function (event) {
-            const dataIndex = event.currentTarget.getAttribute('data-index')
-            const imageAssociated = trueReponse[dataIndex]
-            // Placez le code que vous souhaitez exécuter ici
-            console.log('Icône de corbeille cliquée pour l\'image:', imageAssociated);
+            const dataIndex = event.currentTarget.getAttribute('data-index');
+            const imageAssociated = trueReponse[dataIndex];
+
+            // Obtenez l'ID de l'image que vous souhaitez supprimer
+            const imageIdToDelete = imageAssociated.id;
+
+            // Effectuez une requête DELETE à l'API pour supprimer l'image
+            fetch(`http://localhost:5678/api/works/${imageIdToDelete}`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}` // Assurez-vous d'inclure le token d'authentification si nécessaire
+                }
+            })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Échec de la requête de suppression vers l'API");
+                }
+                // Supprimez également l'image de l'interface utilisateur si la suppression réussit
+                // Vous pouvez implémenter cette logique ici
+                console.log('Image supprimée avec succès.');
+            })
+            .catch((error) => {
+                console.error("Erreur lors de la suppression de l'image :", error);
+            });
         });
-        // insertion nouveaux elements dans figure
+
+        // Insertion de nouveaux éléments dans la figure
         figure.appendChild(img);
-        figure.appendChild(trashIcone)
+        figure.appendChild(trashIcone);
         imgElements.push(figure);
     }
     return imgElements;
 }
+
+
+
+
+
+
+
+
 
 function workingFilter() {
     for (let index = 0; index < boutonClass.length; index++) {

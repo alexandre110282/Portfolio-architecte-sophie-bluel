@@ -337,7 +337,7 @@ header h1, header nav{
 	margin-bottom: 46px;
 }
 
-.btn_ajout{
+.btn_ajout, .btn_valid{
 	width: 237px;
     height: 36px;
     border-radius: 60px;

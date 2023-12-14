@@ -1,4 +1,3 @@
-// Fenêtre modale
 const gallery = document.querySelector('.gallery');
 // Titre modal
 const titlemodal = document.createElement("h3");
@@ -11,7 +10,7 @@ titlemodal.textContent = defaultTitleText;
 const addButton = document.createElement("button");
 addButton.classList.add("btn_ajout");
 const defaultButtonText = "Ajouter une photo";
-
+let validButton = document.createElement("button")
 const modalWrapper = document.querySelector(".modal-wrapper");
 
 const closeButton = document.createElement("span");
@@ -29,177 +28,220 @@ const ajoutPhoto = document.createElement("div");
 modalWrapper.appendChild(closeButton);
 
 const closeButtonElement = document.querySelector(".close-btn");
-
-let titreInput, categorieInput;
-const createFormElement = (labelText, inputType) => {
-  const form = document.createElement("form");
-  const label = document.createElement("label");
-  const input = document.createElement("input");
-
-  label.textContent = labelText;
-  input.setAttribute("type", inputType);
-
-  form.appendChild(label);
-  form.appendChild(input);
-
-// Stocker une référence aux éléments globalement
-  if (labelText === "Titre") {
-    titreInput = input;
-  } else if (labelText === "Catégorie") {
-    categorieInput = input;
-  }
-
-  return form;
-};
+const formsContainer = document.createElement("div");
 let newImg = null
 import { genererImg } from "./script.js";
-    
 
-function handleFormChange() {
-    
-    const imagePresente = ajoutPhoto.querySelector("img") !== null;
-    const texteTitre = titreInput.value.trim() !== "";
-    const texteCategorie = categorieInput.value.trim() !== "";
-    console.log("Image présente:", imagePresente);
-    console.log("Texte dans le titre:", texteTitre);
-    console.log("Texte dans la catégorie:", texteCategorie);
-    // Vérifier si les deux formulaires ont du texte et qu'une image est présente
-    if (texteTitre && texteCategorie && imagePresente) {
-        // Activer le bouton
-        addButton.disabled = false;
-        addButton.style.backgroundColor = "#1D6154";
-        console.log("Texte dans le titre:", texteTitre);
-        console.log("Formulaires remplis avec succès !")
-        console.log("bouton activé")
-    } else {
-        // Désactiver le bouton
-        addButton.disabled = true;
-        addButton.style.backgroundColor = "#A7A7A7";
-        console.log("bouton desactivé")
-    }
-    
-    
-}
-addButton.addEventListener("click", function (){
-        console.log(addButton)
-    })
- const formsContainer = document.createElement("div");
+let titreInput,categorieSelect // Déclarez ces variables globalement
 
 function creaForms() {
-   
     formsContainer.classList.add("formsContainer");
-    formsContainer.appendChild(createFormElement("Titre", "text"));
-    formsContainer.appendChild(createFormElement("Catégorie", "text"));
-    // Ajout de la div contenant les formulaires à modalWrapper
+
+    const titreForm = document.createElement("form");
+    const titreLabel = document.createElement("label");
+    titreInput = document.createElement("input"); 
+    titreLabel.textContent = "Titre";
+    titreInput.setAttribute("type", "text");
+    titreInput.setAttribute("name", "title")
+    titreForm.append(titreLabel,titreInput);
+
+    // Créez un formulaire pour le menu déroulant "Catégorie"
+    const categorieForm = document.createElement("form");
+    const categorieLabel = document.createElement("label");
+    categorieSelect = document.createElement("select");
+    categorieLabel.textContent = "Catégorie";
+    categorieSelect.setAttribute("name", "category")
+    // Ajoutez des options au menu déroulant
+    const optionVide = document.createElement("option");
+    optionVide.value = ""
+
+    const option1 = document.createElement("option");
+    option1.value = "1";
+    option1.textContent = "Objets";
+
+    const option2 = document.createElement("option");
+    option2.value = "2";
+    option2.textContent = "Appartements";
+
+    const option3 = document.createElement("option");
+    option3.value = "3";
+    option3.textContent = "Hôtels & restaurants";
+
+    const options = [
+    { value: "", text: "" },
+    { value: "1", text: "Objets" },
+    { value: "2", text: "Appartements" },
+    { value: "3", text: "Hôtels & restaurants" }
+];
+
+for (const optionData of options) {
+    const option = document.createElement("option");
+    option.value = optionData.value;
+    option.textContent = optionData.text;
+    categorieSelect.appendChild(option);
+}
+
+    categorieForm.append(categorieLabel, categorieSelect);
+    formsContainer.append(titreForm,categorieForm);
     modalWrapper.appendChild(formsContainer);
+}
+
+function handleFormChange() {
+    const imagePresente = ajoutPhoto.querySelector("img") !== null;
+    const texteTitre = titreInput.value.trim() !== ""; // Utilisez la variable globale titreInput
+    const choixCategorie = categorieSelect.value.trim() !== ""; // Utilisez la variable globale categorieSelect
+    console.log("Image présente:", imagePresente);
+    console.log("Texte dans le titre:", texteTitre);
+    console.log(titreInput)
+    console.log(titreInput.value)
+    console.log("Texte dans la catégorie:", choixCategorie);
+    console.log(categorieSelect.value)
+
+    if (texteTitre && choixCategorie && imagePresente) {
+        validButton.disabled = false;
+        validButton.style.backgroundColor = "#1D6154";
+        console.log("Formulaires remplis avec succès !");
+        console.log("bouton activé");
+        
+    } else {
+        validButton.disabled = true;
+        validButton.style.backgroundColor = "#A7A7A7";
+        console.log("bouton désactivé");
+    }
 }
 
 function creaBackButton(){
  backButtonContainer.classList.add("back-button-container");
-            // Création de l'icône de retour
             backButton.classList.add("backButton");
             backButton.innerHTML = `<i class="fa-solid fa-arrow-left"></i>`;
             backButton.id = "modalBack";
-            // Ajout de l'icône au conteneur
-            backButtonContainer.appendChild(backButton);
-            // Ajout du conteneur à la modal
+            backButtonContainer.appendChild(backButton);       
             modalWrapper.appendChild(backButtonContainer);
 }
 
-function creaFigureWithImg(event){
-    event.preventDefault()
-    if(gallery && newImg){
-        const figure = document.createElement ("figure")
-        const imageElement = document.createElement("img");
-            imageElement.src = URL.createObjectURL(newImg);
-            imageElement.alt = "Image sélectionnée";
-        figure.appendChild(imageElement)
-        gallery.appendChild(figure)}
-    insideModal()
+function getTokenFromLocalStorage() {
+    // Récupérez le token depuis le localStorage
+    const token = localStorage.getItem("token");
+    return token;
 }
 
+function envoyerDonneesALaAPI() {
 
-function modal2() {
-    
-        // Vérifier si l'événement provient du bouton btnAjout
-            const wrapper = document.querySelector(".imgWrapper");
-            if (wrapper) {
-                formsContainer.innerHTML=""
-                ajoutPhoto.innerHTML = ""
-                wrapper.remove();   
-            // Changer le texte de l'élément titlemodal
-            titlemodal.textContent = additionalTitleText;
-            
-           
-           
-            creaBackButton()
-            creaForms()
+  const token = getTokenFromLocalStorage()
+  console.log(token)
+ 
+  const formData = new FormData();
+  
+  formData.append("image", selectedFile);
+  formData.append("title", titreInput.value);
+  formData.append("category", categorieSelect.value)
 
-            // Création de la div ajoutPhoto
-            ajoutPhoto.classList.add("ajoutPhoto");
-            
-            // Intérieur ajoutPhoto
-            ajoutPhoto.innerHTML = `<i class="fa-regular fa-image"></i>`;
-            const addPhotoButton = document.createElement("button");
-            addPhotoButton.classList.add("addPhotoButton");
-            addPhotoButton.innerText = "+ Ajouter une photo";
-            const textAjoutPhoto = document.createElement("p");
-            textAjoutPhoto.classList.add("textAjout");
-            textAjoutPhoto.innerText = "jpg. png : 4mo max";
-            ajoutPhoto.appendChild(addPhotoButton);
-            ajoutPhoto.appendChild(textAjoutPhoto);
-            addPhotoButton.addEventListener("click", function () {
-                // Création de l'élément input de type "file"
-            const fileInput = document.createElement("input");
-            fileInput.type = "file";
+  // Effectuez une requête HTTP POST vers l'API
+  fetch("http://localhost:5678/api/works", {
+    method: "POST",
+    headers: {
+                Authorization: `Bearer ${token}`
+            },
+    body: formData,
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Échec de la requête vers l'API");
+      }
+      return response.json();
+    })
+    .then((data) => {
+         works.push(data);
+        return works;
+      
+    })
+    .catch((error) => {
+      console.error("Erreur :", error);
+    });
+}
 
-            // Ajout d'un écouteur d'événements pour le changement de fichier
-            fileInput.addEventListener("change", function (event) {
+let selectedFile
+
+function creaAjoutPhoto(){
+ajoutPhoto.classList.add("ajoutPhoto");
+ajoutPhoto.innerHTML = `
+  <i class="fa-regular fa-image"></i>
+  <button class="addPhotoButton">+ Ajouter une photo</button>
+  <p class="textAjout">jpg. png : 4mo max</p>
+`;
+const addPhotoButton = ajoutPhoto.querySelector(".addPhotoButton")
+
+    addPhotoButton.addEventListener("click", function () {
+        // Création de l'élément input de type "file"
+        const fileInput = document.createElement("input");
+        fileInput.type = "file";
+        fileInput.classList.add("fileInput")
+
+        // Ajout d'un écouteur d'événements pour le changement de fichier
+        fileInput.addEventListener("change", function (event) {
             // Vous pouvez traiter le fichier sélectionné ici
-            const selectedFile = event.target.files[0];
-            console.log("Fichier sélectionné :", selectedFile.name);
+            selectedFile = event.target.files[0];
+            console.log("Fichier sélectionné :", selectedFile.name)
 
             // Vérifier si un fichier a été sélectionné
             if (selectedFile) {
                 newImg = selectedFile;
+                const fileURL = URL.createObjectURL(selectedFile)
+                newImg = fileURL
                 console.log(newImg);
 
                 // Création d'un élément image
                 const imageElement = document.createElement("img");
                 imageElement.src = URL.createObjectURL(selectedFile);
                 imageElement.alt = "Image sélectionnée";
-
-                // Effacer le contenu existant de ajoutPhoto
+                imageElement.setAttribute("name", "image")
+    
                 ajoutPhoto.innerHTML = "";
-
-                // Ajouter l'élément image à la div ajoutPhoto
                 ajoutPhoto.appendChild(imageElement);
             }
-        })
-
-    // Cliquez sur l'élément input de type "file" pour ouvrir l'explorateur de fichiers
-    fileInput.click();
-});
-            // Ajout du bouton "Ajouter une photo" à la div ajoutPhoto
-            ajoutPhoto.appendChild(addPhotoButton);
-            // Changer le texte du bouton btnAjout
-            addButton.textContent = "Valider";
-            // Désactiver le bouton btnAjout
-            addButton.disabled = true;
-            addButton.style.backgroundColor = "#A7A7A7";
-            // Ajout du bouton btnAjout après les formulaires
-            modalWrapper.insertBefore(ajoutPhoto,formsContainer)
-            modalWrapper.appendChild(addButton)
-        }
-
-[ titreInput, categorieInput ].forEach(input =>{ input.addEventListener("input", handleFormChange)});
-        backButton.addEventListener("click", function (event) {
-            event.stopPropagation()
-            resetOpenModal();
-            insideModal()
         });
 
-   addButton.addEventListener("click",creaFigureWithImg)  
+        
+        fileInput.click();
+    }); 
+    ajoutPhoto.appendChild(addPhotoButton); 
+    addButton.style.display = "none"
+    
+    validButton.classList.add("btn_valid")
+    validButton.textContent = "Valider";
+    validButton.disabled = true;
+    validButton.style.backgroundColor = "#A7A7A7";
+    modalWrapper.insertBefore(ajoutPhoto, formsContainer);
+    modalWrapper.appendChild(validButton);
+    }
+
+function modal2() {
+    const wrapper = document.querySelector(".imgWrapper");
+    if (wrapper) {
+        formsContainer.innerHTML = "";
+        ajoutPhoto.innerHTML = "";
+        wrapper.remove();
+    }
+
+    titlemodal.textContent = additionalTitleText;
+
+    creaBackButton();
+    creaForms();
+    creaAjoutPhoto()
+    
+    titreInput.addEventListener("input", handleFormChange);
+    categorieSelect.addEventListener("change", handleFormChange);
+
+    validButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        envoyerDonneesALaAPI()
+    });
+
+    backButton.addEventListener("click", function (event) {
+        event.stopPropagation();
+        resetOpenModal();
+        insideModal();
+    });
 }
 
  export function openModal(e) {
@@ -228,16 +270,13 @@ function insideModal() {
         });
     }
     modalWrapper.appendChild(addButton);
+    addButton.style.display = "block"
     addButton.innerHTML = defaultButtonText;
     addButton.disabled = false;
     addButton.style.backgroundColor = "#1D6154";
 
-    addButton.addEventListener("click", function (event) {
-        event.preventDefault()
-        modal2(event)    
-        })
+    addButton.addEventListener("click", modal2);
 }
-
 
 function resetOpenModal() {
     while (modalWrapper.firstChild) {
@@ -245,7 +284,6 @@ function resetOpenModal() {
     }
     insideModal();
 }
-
 
 const closeModal = function (e) {
     e.preventDefault();
@@ -263,6 +301,7 @@ ModalExit.addEventListener("click", function (event) {
     if (!modalWrapper.contains(event.target)) {
         // Si le clic se produit à l'extérieur de la modale, fermez la modale ici
         ModalExit.style.display = "none"; // Ou utilisez une autre méthode pour masquer la modale
+    closeModal
     }
 });
 
@@ -271,4 +310,3 @@ closeButtonElement.addEventListener("click", closeModal);
 document.querySelectorAll(".modale").forEach(a => {
     a.addEventListener("click", openModal);
 });
-
