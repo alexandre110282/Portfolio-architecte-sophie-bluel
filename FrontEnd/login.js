@@ -28,6 +28,7 @@ async function loginUser() {
 
       throw new Error("Email non valide");
     }
+    
     if (response.status === 401) {
       const invalidPasswordDiv = document.querySelector(".invalidPassword");
       invalidPasswordDiv.innerHTML = "";
@@ -37,14 +38,12 @@ async function loginUser() {
 
       throw new Error("Mot de passe non valide");
     }
-if (response.ok){
-    const data = await response.json();
 
-    localStorage.setItem('token', data.token);
-
-  
-    // Rediriger vers la page d'accueil après le traitement
-    window.location.href = 'index.html';}
+    if (response.ok) {
+      const data = await response.json();
+      localStorage.setItem('token', data.token);
+      window.location.href = 'index.html';
+    }
   } catch (error) {
     // Gestion des erreurs ici
     console.error(error.message);

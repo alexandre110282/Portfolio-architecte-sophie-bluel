@@ -57,7 +57,7 @@ body {
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	margin: 50px 0;
 }
 section {
 	margin: 50px 0
@@ -148,7 +148,7 @@ li:hover {
 	justify-content: center;
 	height: 37px;
 	gap: 19px;
-	
+	margin-bottom: 40px;
 }
 
 .filtres{
@@ -165,6 +165,10 @@ li:hover {
 	line-height: normal;
 }
 
+.filtres:hover{
+background: #1D6154;
+color: white;
+}
 
 #contact {
 	width: 50%;
@@ -365,12 +369,19 @@ header h1, header nav{
     top: 24px;
 }
 
+.formsContainer{
+	border-bottom: 1px solid #B3B3B3;
+    padding-bottom: 40px;
+}
+
+
 .formsContainer form{
 	display: flex;
 	flex-direction: column;
 }
 
-.formsContainer input{
+.formsContainer input,
+.formsContainer select {
 	width: 420px;
 height: 51px;
 background: #FFF;

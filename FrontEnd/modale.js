@@ -34,6 +34,15 @@ import { genererImg } from "./script.js";
 
 let titreInput,categorieSelect // Déclarez ces variables globalement
 
+ export function openModal() {
+    console.log("openModal called")
+    const target = document.querySelector("#modal1");
+    target.style.display = null;
+    target.removeAttribute("aria-hidden");
+    target.setAttribute("aria-modal", "true");
+    insideModal();
+}
+import { genererProjets } from "./script.js";
 function creaForms() {
     formsContainer.classList.add("formsContainer");
 
@@ -124,7 +133,7 @@ function getTokenFromLocalStorage() {
     const token = localStorage.getItem("token");
     return token;
 }
-
+let works = []
 function envoyerDonneesALaAPI() {
 
   const token = getTokenFromLocalStorage()
@@ -149,9 +158,11 @@ function envoyerDonneesALaAPI() {
         throw new Error("Échec de la requête vers l'API");
       }
       return response.json();
+      
     })
     .then((data) => {
          works.push(data);
+         window.addEventListener("load", openModal)
         return works;
       
     })
@@ -234,24 +245,16 @@ function modal2() {
 
     validButton.addEventListener("click", function (event) {
         event.preventDefault();
-        envoyerDonneesALaAPI()
+        envoyerDonneesALaAPI(genererProjets)
     });
 
     backButton.addEventListener("click", function (event) {
         event.stopPropagation();
         resetOpenModal();
-        insideModal();
     });
 }
 
- export function openModal(e) {
-    e.preventDefault();
-    const target = document.querySelector(e.target.getAttribute("href"));
-    target.style.display = null;
-    target.removeAttribute("aria-hidden");
-    target.setAttribute("aria-modal", "true");
-    insideModal();
-}
+
 
 function insideModal() {
     modalWrapper.innerHTML = "";

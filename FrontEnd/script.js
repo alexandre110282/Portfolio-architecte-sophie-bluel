@@ -2,10 +2,9 @@ const apiUrl = 'http://localhost:5678/api/works';
 console.log(apiUrl);
 const reponse = await fetch(apiUrl);
 const trueReponse = await reponse.json();
-
 console.log(trueReponse);
 console.log(reponse);
-const index = trueReponse.map(list => list.imageUrl);
+
 const imgEdit = `<i class="fa-regular fa-pen-to-square"></i>`
 
 window.addEventListener('keydown', function (e) {
@@ -38,7 +37,7 @@ function boutonFiltres() {
     portH2.parentNode.insertBefore(listFiltre, portH2.nextSibling);
 }
 
-function genererProjets(trueReponse) {
+ export function genererProjets(trueReponse) {
     for (let i = 0; i < trueReponse.length; i++) {
         let figure = document.createElement("figure");
         //creation balise img et figcaption
@@ -91,10 +90,12 @@ export function genererImg() {
                 if (!response.ok) {
                     throw new Error("Échec de la requête de suppression vers l'API");
                 }
+                
                 // Supprimez également l'image de l'interface utilisateur si la suppression réussit
                 // Vous pouvez implémenter cette logique ici
                 console.log('Image supprimée avec succès.');
             })
+          
             .catch((error) => {
                 console.error("Erreur lors de la suppression de l'image :", error);
             });
@@ -107,14 +108,6 @@ export function genererImg() {
     }
     return imgElements;
 }
-
-
-
-
-
-
-
-
 
 function workingFilter() {
     for (let index = 0; index < boutonClass.length; index++) {
@@ -137,6 +130,16 @@ function workingFilter() {
         });
     }
 }
+
+function createBanner(text) {
+    const banner = document.createElement("div");
+    banner.classList.add("banner");
+    banner.href = "#banner";
+    banner.innerHTML = imgEdit + " " + text;
+    return banner;
+}
+
+
 if (token != null) {
     // Le token existe, vous pouvez effectuer des opérations avec le token ici
     console.log("Le token existe");
@@ -149,11 +152,8 @@ if (token != null) {
     modification.innerHTML = imgEdit + " Modifier";
     const portH2 = document.querySelector("#portfolio h2");
     portH2.parentNode.insertBefore(modification, portH2.nextSibling);
-    const blackBanner = document.createElement("div");
-    blackBanner.classList.add("banner");
-    blackBanner.href = "#banner";
-    blackBanner.innerHTML = imgEdit + " Mode édition";
-    document.querySelector("header").insertBefore(blackBanner, document.querySelector("h1"));
+    const blackBanner = createBanner("Mode édition");
+document.querySelector("header").insertBefore(blackBanner, document.querySelector("h1"))
     const loginLink = document.getElementById('loginLink');
     loginLink.innerHTML = '<a href="#">Logout</a>';
     loginLink.addEventListener('click', function (e) {
@@ -166,7 +166,8 @@ if (token != null) {
 } else {
     // Le token est null (n'existe pas)
     console.log("Le token n'existe pas");
-
+    let header = document.querySelector("header")
+    header.style.margin = "0px"
     boutonFiltres();
     workingFilter();
     genererProjets(trueReponse);
