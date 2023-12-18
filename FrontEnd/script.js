@@ -1,25 +1,17 @@
+import { getToken } from "./token.js";
+import { removeToken } from "./token.js";
 const apiUrl = 'http://localhost:5678/api/works';
-console.log(apiUrl);
 const reponse = await fetch(apiUrl);
-const trueReponse = await reponse.json();
-console.log(trueReponse);
-console.log(reponse);
+ export const trueReponse = await reponse.json();
 
 const imgEdit = `<i class="fa-regular fa-pen-to-square"></i>`
 
-window.addEventListener('keydown', function (e) {
-    if (e.key === "F5") {
-        localStorage.clear();
-    }
-});
-
-const gallery = document.querySelector('.gallery');
+export const gallery = document.querySelector('.gallery');
 const boutonsText = ["Tous", "Objets", "Appartements", "Hôtels & restaurants"];
 const boutonsCat = ["Tous", "Objets", "Appartements", "Hotels & restaurants"];
 const boutonClass = ["btn-tous", "btn-obj", "btn-appart", "btn-hotel"];
 const listFiltre = document.createElement("div");
 listFiltre.classList.add("listfiltres");
-const token = localStorage.getItem('token');
 
 function boutonFiltres() {
     for (let i = 0; i < boutonsText.length; i++) {
@@ -59,55 +51,57 @@ function boutonFiltres() {
 export function genererImg() {
     const imgElements = [];
     for (let i = 0; i < trueReponse.length; i++) {
-        let figure = document.createElement("figure");
-        // Création des balises img et figcaption
+        const figure = document.createElement("figure");
         const img = document.createElement("img");
-        // Accès à l'image[i] et alt
         img.src = trueReponse[i].imageUrl;
         img.alt = trueReponse[i].title;
-        // Insertion de l'icône trash
+
         const trashIcone = document.createElement("div");
         trashIcone.classList.add("trash");
-        const trashImg = '<i class="fa-solid fa-trash-can"></i>';
         trashIcone.setAttribute('data-index', i);
-        trashIcone.innerHTML = trashImg;
-        // Ajout de l'événement de clic sur l'icône de corbeille
-        trashIcone.addEventListener('click', function (event) {
-            const dataIndex = event.currentTarget.getAttribute('data-index');
-            const imageAssociated = trueReponse[dataIndex];
+        trashIcone.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
 
-            // Obtenez l'ID de l'image que vous souhaitez supprimer
-            const imageIdToDelete = imageAssociated.id;
+        trashIcone.addEventListener('click', Delete);
 
-            // Effectuez une requête DELETE à l'API pour supprimer l'image
-            fetch(`http://localhost:5678/api/works/${imageIdToDelete}`, {
-                method: 'DELETE',
-                headers: {
-                    Authorization: `Bearer ${token}` // Assurez-vous d'inclure le token d'authentification si nécessaire
-                }
-            })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Échec de la requête de suppression vers l'API");
-                }
-                
-                // Supprimez également l'image de l'interface utilisateur si la suppression réussit
-                // Vous pouvez implémenter cette logique ici
-                console.log('Image supprimée avec succès.');
-            })
-          
-            .catch((error) => {
-                console.error("Erreur lors de la suppression de l'image :", error);
-            });
-        });
-
-        // Insertion de nouveaux éléments dans la figure
         figure.appendChild(img);
         figure.appendChild(trashIcone);
         imgElements.push(figure);
     }
     return imgElements;
 }
+
+function Delete(event) {
+    const token = getToken();
+    if (!token) {
+        console.error("Token non disponible ou expiré.");
+        return;
+    }
+
+    const dataIndex = event.currentTarget.getAttribute('data-index');
+    const imageAssociated = trueReponse[dataIndex];
+    const imageIdToDelete = imageAssociated.id;
+
+    fetch(`http://localhost:5678/api/works/${imageIdToDelete}`, {
+        method: 'DELETE',
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error("Échec de la requête de suppression vers l'API");
+        }
+        trueReponse.splice(dataIndex, 1)
+        gallery.innerHTML=""
+        genererProjets(trueReponse)
+        openModal()
+        console.log('Image supprimée avec succès.');
+    })
+    .catch((error) => {
+        console.error("Erreur lors de la suppression de l'image :", error);
+    });
+}
+
 
 function workingFilter() {
     for (let index = 0; index < boutonClass.length; index++) {
@@ -140,7 +134,7 @@ function createBanner(text) {
 }
 
 
-if (token != null) {
+if (getToken() != null) {
     // Le token existe, vous pouvez effectuer des opérations avec le token ici
     console.log("Le token existe");
     genererProjets(trueReponse);
@@ -153,13 +147,13 @@ if (token != null) {
     const portH2 = document.querySelector("#portfolio h2");
     portH2.parentNode.insertBefore(modification, portH2.nextSibling);
     const blackBanner = createBanner("Mode édition");
-document.querySelector("header").insertBefore(blackBanner, document.querySelector("h1"))
+    document.querySelector("header").insertBefore(blackBanner, document.querySelector("h1"))
     const loginLink = document.getElementById('loginLink');
     loginLink.innerHTML = '<a href="#">Logout</a>';
     loginLink.addEventListener('click', function (e) {
         e.preventDefault();
         // Supprimer le token du localStorage
-        localStorage.removeItem('token');
+        removeToken();
         // Rediriger vers la page de login ou effectuer d'autres opérations si nécessaire
         window.location.href = './index.html';
     });

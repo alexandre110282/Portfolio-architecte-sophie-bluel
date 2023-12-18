@@ -1,3 +1,4 @@
+import { storeToken } from "./token.js";
 async function loginUser() {
   try {
     const email = document.getElementById("email").value;
@@ -20,28 +21,22 @@ async function loginUser() {
     });
 
     if (response.status === 404) {
-      const invalidEmailDiv = document.querySelector(".invalidEmail");
-      invalidEmailDiv.innerHTML = "";
-      const invalidEmail = document.createElement("p");
-      invalidEmail.innerText = "Email non valide";
-      invalidEmailDiv.appendChild(invalidEmail);
+    const invalidEmailDiv = document.querySelector(".invalidEmail");
+    invalidEmailDiv.innerHTML = "<p>Email non valide</p>";
 
-      throw new Error("Email non valide");
-    }
+    throw new Error("Email non valide");
+}
     
-    if (response.status === 401) {
-      const invalidPasswordDiv = document.querySelector(".invalidPassword");
-      invalidPasswordDiv.innerHTML = "";
-      const invalidPassword = document.createElement("p");
-      invalidPassword.innerText = "Mot de passe non valide";
-      invalidPasswordDiv.appendChild(invalidPassword);
+   if (response.status === 401) {
+    const invalidPasswordDiv = document.querySelector(".invalidPassword");
+    invalidPasswordDiv.innerHTML = "<p>Mot de passe non valide</p>";
 
-      throw new Error("Mot de passe non valide");
-    }
+    throw new Error("Mot de passe non valide");
+}
 
     if (response.ok) {
       const data = await response.json();
-      localStorage.setItem('token', data.token);
+      storeToken(data.token, 1440)
       window.location.href = 'index.html';
     }
   } catch (error) {
