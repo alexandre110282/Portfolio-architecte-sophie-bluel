@@ -199,8 +199,6 @@ function eventHandler(event) {
     envoyerDonneesALaAPI();
 }
 
-
-
 function modal2() {
     const wrapper = document.querySelector(".imgWrapper");
     if (wrapper) {

@@ -2,7 +2,7 @@ import { getToken } from "./token.js";
 import { removeToken } from "./token.js";
 const apiUrl = 'http://localhost:5678/api/works';
 const reponse = await fetch(apiUrl);
- export const trueReponse = await reponse.json();
+export const trueReponse = await reponse.json();
 
 const imgEdit = `<i class="fa-regular fa-pen-to-square"></i>`
 
