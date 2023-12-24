@@ -7,27 +7,60 @@ export const trueReponse = await reponse.json();
 const imgEdit = `<i class="fa-regular fa-pen-to-square"></i>`
 
 export const gallery = document.querySelector('.gallery');
-const boutonsText = ["Tous", "Objets", "Appartements", "Hôtels & restaurants"];
-const boutonsCat = ["Tous", "Objets", "Appartements", "Hotels & restaurants"];
-const boutonClass = ["btn-tous", "btn-obj", "btn-appart", "btn-hotel"];
 const listFiltre = document.createElement("div");
 listFiltre.classList.add("listfiltres");
 
 function boutonFiltres() {
-    for (let i = 0; i < boutonsText.length; i++) {
-        // Création du bouton
-        const bouton = document.createElement('button');
-        bouton.type = "submit";
-        bouton.classList.add("filtres", boutonClass[i]);
-        // Attribution du texte au bouton à partir du tableau
-        bouton.innerText = boutonsText[i];
-        bouton.setAttribute('data-category', boutonsCat[i]);
-        // Ajout du bouton au corps du document
-        listFiltre.appendChild(bouton);
+  const categories = [];
+
+  // Récupérer les noms de catégories uniques depuis trueReponse
+  for (const projet of trueReponse) {
+    if (!categories.includes(projet.category.name)) {
+      categories.push(projet.category.name);
     }
-    const portH2 = document.querySelector("#portfolio h2");
-    portH2.parentNode.insertBefore(listFiltre, portH2.nextSibling);
+  }
+
+  // Ajouter un bouton "Tous" manuellement
+  categories.unshift("Tous");
+
+  // Créer les boutons de filtre
+  for (let i = 0; i < categories.length; i++) {
+    const bouton = document.createElement('button');
+    bouton.type = "submit";
+    bouton.classList.add("filtres");
+    bouton.innerText = categories[i];
+    bouton.setAttribute('data-category', categories[i]);
+    listFiltre.appendChild(bouton);
+  }
+
+  const portH2 = document.querySelector("#portfolio h2");
+  portH2.parentNode.insertBefore(listFiltre, portH2.nextSibling);
 }
+
+function workingFilter() {
+  const categories = document.querySelectorAll(".filtres");
+  
+  for (let index = 0; index < categories.length; index++) {
+    const choixbouton = categories[index];
+    choixbouton.addEventListener("click", function () {
+      // Récupérer la catégorie à partir de l'attribut data-category
+      const category = choixbouton.getAttribute('data-category');
+      if (category === "Tous") {
+        document.querySelector(".gallery").innerHTML = "";
+        genererProjets(trueReponse);
+      } else {
+        // Filtrer les projets en fonction de la catégorie
+        const projetsFiltres = trueReponse.filter(function (projet) {
+          return projet.category.name === category;
+        });
+        // Vider la galerie et générer les projets filtrés
+        document.querySelector(".gallery").innerHTML = "";
+        genererProjets(projetsFiltres);
+      }
+    });
+  }
+}
+
 
  export function genererProjets(trueReponse) {
     for (let i = 0; i < trueReponse.length; i++) {
@@ -102,29 +135,6 @@ function Delete(event) {
     });
 }
 
-
-function workingFilter() {
-    for (let index = 0; index < boutonClass.length; index++) {
-        let choixbouton = document.querySelector("." + boutonClass[index]);
-        choixbouton.addEventListener("click", function () {
-            // Récupérer la catégorie à partir de l'attribut data-category
-            const category = choixbouton.getAttribute('data-category');
-            if (category === "Tous") {
-                document.querySelector(".gallery").innerHTML = "";
-                genererProjets(trueReponse);
-            } else {
-                // Filtrer les projets en fonction de la catégorie
-                const projetsFiltres = trueReponse.filter(function (projet) {
-                    return projet.category.name === category;
-                });
-                // Vider la galerie et générer les projets filtrés
-                document.querySelector(".gallery").innerHTML = "";
-                genererProjets(projetsFiltres);
-            }
-        });
-    }
-}
-
 function createBanner(text) {
     const banner = document.createElement("div");
     banner.classList.add("banner");
@@ -132,7 +142,6 @@ function createBanner(text) {
     banner.innerHTML = imgEdit + " " + text;
     return banner;
 }
-
 
 if (getToken() != null) {
     // Le token existe, vous pouvez effectuer des opérations avec le token ici

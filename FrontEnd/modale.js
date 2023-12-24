@@ -1,5 +1,7 @@
 import { trueReponse } from './script.js'
 import { gallery } from './script.js'
+import { genererImg } from "./script.js";
+import { getToken } from "./token.js";
 const titlemodal = document.createElement("h3");
 titlemodal.setAttribute("id", "titlemodal");
 const defaultTitleText = "Galerie Photo";
@@ -32,8 +34,7 @@ const ajoutPhoto = createElement("div", "ajout-photo");
 
 const formsContainer = document.createElement("div");
 let newImg = null
-import { genererImg } from "./script.js";
-import { getToken } from "./token.js";
+
 let titreInput,categorieSelect
 
  export function openModal() {
@@ -58,27 +59,29 @@ function creaForms() {
     
     titreForm.append(titreLabel,titreInput);
 
-    // Créez un formulaire pour le menu déroulant "Catégorie"
-    const categorieForm = document.createElement("form");
-    const categorieLabel = document.createElement("label");
-    categorieLabel.textContent = "Catégorie";
-    categorieSelect = document.createElement("select");
-    categorieSelect.setAttribute("name", "category")
-    // Ajoutez des options au menu déroulant
-    
-    const options = [
-    { value: "", text: "" },
-    { value: "1", text: "Objets" },
-    { value: "2", text: "Appartements" },
-    { value: "3", text: "Hôtels & restaurants" }
-];
+   // Créez un formulaire pour le menu déroulant "Catégorie"
+  const categorieForm = document.createElement("form");
+  const categorieLabel = document.createElement("label");
+  categorieLabel.textContent = "Catégorie";
+  categorieSelect = document.createElement("select");
+  categorieSelect.setAttribute("name", "category");
+  
+  // Ajoutez une option vide par défaut
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.textContent = "";
+  categorieSelect.appendChild(defaultOption);
 
-for (const optionData of options) {
+  // Récupérez les noms de catégorie uniques depuis trueReponse
+  const categories = [...new Set(trueReponse.map(projet => projet.category.name))];
+
+  // Créez les options du menu déroulant à partir des noms de catégorie uniques
+  for (const category of categories) {
     const option = document.createElement("option");
-    option.value = optionData.value;
-    option.textContent = optionData.text;
-    categorieSelect.appendChild(option);
-}
+    option.value = category;
+    option.textContent = category;
+    categorieSelect.appendChild(option)
+  }
     categorieForm.append(categorieLabel, categorieSelect);
     formsContainer.append(titreForm,categorieForm);
     modalWrapper.appendChild(formsContainer);
